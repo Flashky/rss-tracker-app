@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: rss-tracker-mongodb
+    hostname: mongodb
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD:-admin}
+      - MONGO_INITDB_DATABASE=${MONGODB_DATABASE:-rss_tracker_db}
+    ports:
+      - "${MONGODB_PORT}:27017"
+    networks:
+      - rss-app-network
+      
+  rss-tracker-bot:
+    image: flashk/rss-tracker-bot:latest
+    container_name: rss-tracker-bot
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - MONGODB_HOST=mongodb
+      - MONGODB_USERNAME=${MONGODB_USERNAME:-admin}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD:-admin}
+    networks:
+      - rss-app-network
+      
+  rss-tracker-batch:
+    image: flashk/rss-tracker-batch:latest
+    container_name: rss-tracker-batch
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - MONGODB_HOST=mongodb
+      - MONGODB_USERNAME=${MONGODB_USERNAME:-admin}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD:-admin}
+      - JOB_FIXED_DELAY_SECONDS=${JOB_FIXED_DELAY_SECONDS:-60}
+      
+    networks:
+      - rss-app-network
+
+networks:
+  rss-app-network:
+    driver: bridge
