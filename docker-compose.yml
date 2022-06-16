@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mongodb:
-    image: mongo:latest
+    image: mongo:4.4.5
     container_name: rss-tracker-mongodb
     hostname: mongodb
     restart: always
@@ -43,7 +43,6 @@ services:
       - MONGODB_USERNAME=${MONGODB_USERNAME:-admin}
       - MONGODB_PASSWORD=${MONGODB_PASSWORD:-admin}
       - JOB_FIXED_DELAY_SECONDS=${JOB_FIXED_DELAY_SECONDS:-60}
-      
     networks:
       - rss-app-network
 
