@@ -42,8 +42,8 @@ docker-compose up -d
 
 The previous command will setup the following containers:
 - rss-tracker-mongodb 
-- rss-tracker-bot
-- rss-tracker-batch
+- [rss-tracker-bot](https://github.com/Flashky/rss-tracker-bot)
+- [rss-tracker-batch](https://github.com/Flashky/rss-tracker-batch)
 
 It will use ``.env`` file by default for getting the [configuration properties](#configuration-properties).
 
@@ -54,4 +54,12 @@ Example with a ``.env.dev`` file:
 ```shell
 docker-compose pull
 docker-compose --env-file .env.dev up -d
+```
+
+#### Image cleanup
+
+Use the following command to remove old images:
+
+````bash
+docker image prune -f
 ```
