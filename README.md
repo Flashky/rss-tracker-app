@@ -28,23 +28,30 @@ On Docker Compose running mode:
 
 #### Run
 
-Command:
+Check for images updates:
 
-```shell
-nohup docker compose up &
+```bash
+docker-compose pull
 ```
 
-The previous command will setup:
-- MongoDB Container
-- rss-tracker-bot container.
-- rss-tracker-batch container.
+Run in dettach mode:
+
+```shell
+docker-compose up -d
+```
+
+The previous command will setup the following containers:
+- rss-tracker-mongodb 
+- rss-tracker-bot
+- rss-tracker-batch
 
 It will use ``.env`` file by default for getting the [configuration properties](#configuration-properties).
 
-If you want to use multiple environments you can duplicate ``.env``, customize its values, and finally run ``docker compose`` specifying ``--env-file`` flag  to select which configuration to use.
+If you want to use multiple environments you can duplicate ``.env``, customize its values, and finally run ``docker-compose`` specifying ``--env-file`` flag  to select which configuration to use.
 
 Example with a ``.env.dev`` file:
 
 ```shell
-nohup docker compose --env-file .env.dev up &
+docker-compose pull
+docker-compose --env-file .env.dev up -d
 ```
